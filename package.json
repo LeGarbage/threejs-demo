@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "node": "^20.19.5",
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "vite": "^7.1.4"
+  }
+}
