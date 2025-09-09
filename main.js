@@ -15,6 +15,11 @@ scene.add(cube);
 
 camera.position.z = 5;
 
+const maxZoom = 50;
+const minZoom = 2;
+let zoomAcceleration = 1;
+let zoomVelocity = 0;
+
 window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -23,13 +28,19 @@ window.addEventListener("resize", () => {
 })
 
 renderer.domElement.addEventListener("wheel", (event) => {
-    camera.position.z -= event.wheelDelta / 20;
-    camera.position.z = Math.min(50, Math.max(2, camera.position.z));
+    zoomVelocity -= event.wheelDelta / 20;
 });
 
 function animate() {
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;
+
+    zoomVelocity += Math.min(Math.abs(zoomVelocity), zoomAcceleration) * -Math.sign(zoomVelocity);
+
+    camera.position.z += (zoomVelocity / maxZoom) * camera.position.z;
+    camera.position.z = Math.min(maxZoom, Math.max(minZoom, camera.position.z));
+
+    console.log(camera.position.z);
 
     renderer.render(scene, camera);
 }
