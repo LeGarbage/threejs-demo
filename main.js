@@ -31,6 +31,22 @@ renderer.domElement.addEventListener("wheel", (event) => {
     zoomVelocity -= event.wheelDelta / 20;
 });
 
+let dragging = false;
+renderer.domElement.addEventListener("mousedown", (_) => {
+    dragging = true;
+});
+renderer.domElement.addEventListener("mouseup", (_) => {
+    dragging = false;
+});
+renderer.domElement.addEventListener("mousemove", (event) => {
+    if (dragging) {
+        camera.position.x -= event.movementX / 20;
+        camera.position.y -= event.movementY / 20;
+        console.log(camera.position);
+    }
+});
+
+
 function animate() {
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;
@@ -39,8 +55,6 @@ function animate() {
 
     camera.position.z += (zoomVelocity / maxZoom) * camera.position.z;
     camera.position.z = Math.min(maxZoom, Math.max(minZoom, camera.position.z));
-
-    console.log(camera.position.z);
 
     renderer.render(scene, camera);
 }
